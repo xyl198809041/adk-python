@@ -609,14 +609,14 @@ def get_fast_api_app(
         return events
 
     @app.get("/run_single")
-    async def agent_run_single(app_name: str, msg: str) -> str:
+    async def agent_run_single(app_name: str, msg: str) -> list[str]:
         # Connect to managed session if agent_engine_id is set.
         session = session_service.create_session(
             app_name=app_name, user_id='user', session_id=str(uuid.uuid4())
         )
         runner = await _get_runner_async(app_name)
         events = [
-            event
+            event.content.parts[0].text
             async for event in runner.run_async(
                 user_id='user',
                 session_id=session.id,
@@ -625,7 +625,7 @@ def get_fast_api_app(
         ]
         session_service.delete_session(app_name=app_name,user_id='user', session_id=session.id)
         logger.info("Generated %s events in agent run: %s", len(events), events)
-        return events[-1].content.parts[0].text
+        return events
 
     @app.post("/run_sse")
     async def agent_run_sse(req: AgentRunRequest) -> StreamingResponse:
