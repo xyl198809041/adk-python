@@ -622,6 +622,7 @@ def get_fast_api_app(
                 session_id=session.id,
                 new_message=types.Content(role='user', parts=[types.Part(text=msg)]),
             )
+            if 'text' in event.content.parts[0] and event.content.parts[0].text
         ]
         session_service.delete_session(app_name=app_name,user_id='user', session_id=session.id)
         logger.info("Generated %s events in agent run: %s", len(events), events)
