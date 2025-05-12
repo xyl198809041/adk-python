@@ -620,7 +620,7 @@ def get_fast_api_app(
             async for event in runner.run_async(
                 user_id='user',
                 session_id=session.id,
-                new_message=types.Content(role='user', parts=[types.Part(text=req.new_message)]),
+                new_message=req.new_message,
             )
         ]
         session_service.delete_session(app_name=req.app_name,user_id='user', session_id=session.id)
