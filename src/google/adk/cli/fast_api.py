@@ -106,8 +106,8 @@ class ApiServerSpanExporter(export.SpanExporter):
 
 class AgentRunRequest(BaseModel):
     app_name: str
-    user_id: str
-    session_id: str
+    user_id: str = ""
+    session_id: str = ""
     new_message: types.Content
     streaming: bool = False
 
